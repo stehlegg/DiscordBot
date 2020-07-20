@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,12 @@ public class VoiceJoin extends ListenerAdapter {
 		String id = event.getMember().getId();
 		Guild guild = event.getGuild();
 		this.guild = guild;
+		System.out.println("Joined");
+		try {
+			config.loadConfig();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if(config.isDa(id) && !guild.getAudioManager().isConnected())    {
 			String TrackUrl = config.getValue(id);
 			//String TrackUrl = "https://www.youtube.com/watch?v=L-dNSnANKAI";
