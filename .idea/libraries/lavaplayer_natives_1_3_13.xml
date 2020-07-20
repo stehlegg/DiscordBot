@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lavaplayer-natives-1.3.13">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/dev/lavaplayer-natives-1.3.13.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/dev/lavaplayer-1.3.50.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/dev/lava-common-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
