@@ -1,15 +1,17 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="YAYEET:jar">
+  <artifact name="YAYEET:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/YAYEET_jar</output-path>
-    <root id="archive" name="YAYEET.jar">
-      <element id="module-output" name="YAYEET" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/alt/JDA-4.2.0_179-withDependencies.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/lavaplayer-natives-1.3.13.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/lavaplayer-1.3.50.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/lava-common-1.1.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/httpcore-4.4.12.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/commons-io-2.6.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/dev/httpclient-4.5.10.jar" path-in-jar="/" />
+    <root id="root">
+      <element id="archive" name="bot.jar">
+        <element id="module-output" name="YAYEET" />
+      </element>
+      <element id="directory" name="dependencies">
+        <element id="library" level="project" name="commons-io-2.6" />
+        <element id="library" level="project" name="httpclient-4.5.10" />
+        <element id="library" level="project" name="httpcore-4.4.12" />
+        <element id="library" level="project" name="JDA-4.2.0_179-withDependencies" />
+        <element id="library" level="project" name="lavaplayer-natives-1.3.13" />
+      </element>
     </root>
   </artifact>
 </component>

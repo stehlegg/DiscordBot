@@ -1,4 +1,6 @@
-import net.dv8tion.jda.api.entities.User;
+package Music;
+
+import Core.config;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -9,7 +11,6 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -24,7 +25,7 @@ public class VoiceJoin extends ListenerAdapter {
 	public void onGuildVoiceJoin(GuildVoiceJoinEvent event)  {
 		String id = event.getMember().getId();
 		Guild guild = event.getGuild();
-		this.guild = guild;
+		VoiceJoin.guild = guild;
 		System.out.println("Joined");
 		try {
 			config.loadConfig();
@@ -68,11 +69,7 @@ public class VoiceJoin extends ListenerAdapter {
 		playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
 			@Override
 			public void trackLoaded(AudioTrack track) {
-				try {
-					play(guild, musicManager, track, vc);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				play(guild, musicManager, track, vc);
 			}
 
 			@Override
@@ -83,11 +80,7 @@ public class VoiceJoin extends ListenerAdapter {
 					firstTrack = playlist.getTracks().get(0);
 				}
 
-				try {
-					play(guild, musicManager, firstTrack, vc);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				play(guild, musicManager, firstTrack, vc);
 			}
 
 			@Override
@@ -102,7 +95,7 @@ public class VoiceJoin extends ListenerAdapter {
 		});
 	}
 
-	private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track, VoiceChannel vc) throws InterruptedException {
+	private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track, VoiceChannel vc)  {
 		connectToFirstVoiceChannel(guild.getAudioManager(), vc);
 
 		musicManager.scheduler.queue(track);
@@ -113,7 +106,7 @@ public class VoiceJoin extends ListenerAdapter {
 		musicManager.scheduler.nextTrack();
 	}
 
-	private static void connectToFirstVoiceChannel(AudioManager audioManager, VoiceChannel vc) throws InterruptedException {
+	private static void connectToFirstVoiceChannel(AudioManager audioManager, VoiceChannel vc)  {
 		if (!audioManager.isConnected()) {
 			audioManager.openAudioConnection(vc);
 		}

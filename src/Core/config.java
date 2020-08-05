@@ -1,3 +1,5 @@
+package Core;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,9 +30,6 @@ public class config {
 	}
 
 	public static boolean isDa(String key) {
-		if (cfg.getProperty(key) != null)
-			return true;
-		else
-			return false;
+		return cfg.getProperty(key) != null;
 	}
 }
