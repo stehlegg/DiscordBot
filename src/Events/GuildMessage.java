@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import pr0.Captcha;
 import pr0.Inspect;
 
 import java.io.IOException;
@@ -19,6 +20,14 @@ public class GuildMessage extends ListenerAdapter {
 		Message msg = event.getMessage();
 		String content = msg.getContentRaw();
 		TextChannel ch = event.getMessage().getTextChannel();
+
+		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
+			try {
+				Captcha.getCaptcha(ch);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		try {
 			Config.loadConfig();

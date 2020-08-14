@@ -74,7 +74,3 @@ public class Inspect {
 		//TextChannel ch, String title, String desc, String footer, String imgUrl, String postUrl
 	}
 }
-
-// {"id":3273699,"promoted":442506,"userId":324162,"up":1670,"down":17,"created":1561308938,
-// "image":"2019\/06\/23\/1d8c43bc0e5ab417.jpg","thumb":"2019\/06\/23\/1d8c43bc0e5ab417.jpg","fullsize":""
-// ,"width":1052,"height":3115,"audio":false,"source":"","flags":1,"user":"5yn74x","mark":5,"gift":0}
