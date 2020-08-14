@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Random;
 
-public class config {
+public class Config {
 	private static Properties cfg;
 
 	public static void loadConfig() throws IOException {

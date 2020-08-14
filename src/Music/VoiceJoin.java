@@ -1,6 +1,6 @@
 package Music;
 
-import Core.config;
+import Core.Config;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -28,12 +28,12 @@ public class VoiceJoin extends ListenerAdapter {
 		VoiceJoin.guild = guild;
 		System.out.println("Joined");
 		try {
-			config.loadConfig();
+			Config.loadConfig();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(config.isDa(id) && !guild.getAudioManager().isConnected())    {
-			String TrackUrl = config.getValue(id);
+		if(Config.isDa(id) && !guild.getAudioManager().isConnected())    {
+			String TrackUrl = Config.getValue(id);
 			//String TrackUrl = "https://www.youtube.com/watch?v=L-dNSnANKAI";
 			skipTrack(guild);
 			loadAndPlay(guild, TrackUrl, event.getChannelJoined());
