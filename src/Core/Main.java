@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 
 public class Main   {
 
@@ -19,6 +21,8 @@ public class Main   {
 
 	public static void main(String[] args) throws IllegalArgumentException, LoginException, InterruptedException, IOException, SAXException {
 		Config.loadConfig();
+		CookieManager cookieManager = new CookieManager();
+		CookieHandler.setDefault(cookieManager);
 		api = JDABuilder
 				.createDefault(Config.getValue("token"))
 				.addEventListeners(

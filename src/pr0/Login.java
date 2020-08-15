@@ -13,11 +13,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Login {
-	public static void pr0Login(String token, String captcha, TextChannel ch) throws IOException {
+	public static void pr0Login(String captcha, TextChannel ch) throws IOException {
 
 		String body = "name=" + URLEncoder.encode(Config.getValue("pr0-name"),"UTF-8") + "&" +
 				      "password=" + URLEncoder.encode(Config.getValue("pr0-pwd"),"UTF-8") + "&" +
-				      "token=" + URLEncoder.encode(token,"UTF-8") + "&" +
+				      "token=" + URLEncoder.encode(Captcha.token,"UTF-8") + "&" +
 				      "captcha=" + URLEncoder.encode(captcha,"UTF-8");
 
 		URL url = new URL("https://pr0gramm.com/api/user/login/post/");

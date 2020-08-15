@@ -33,7 +33,7 @@ public class GuildMessage extends ListenerAdapter {
 		else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
-				pr0.Login.pr0Login(values[1], values[2], event.getChannel());
+				pr0.Login.pr0Login(values[1], event.getChannel());
 				handleDelete(event.getMessage());
 
 			} catch (IOException | InterruptedException e) {
