@@ -30,6 +30,6 @@ public class Captcha {
 		File output = new File("captcha.png");
 		ImageIO.write(img, "png", output);
 
-		ch.sendFile(output).queue();
+		ch.sendFile(output).append(json.getString("token")).queue();
 	}
 }

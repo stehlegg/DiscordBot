@@ -29,6 +29,15 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		}
 
+		if(event.getMessage().getContentRaw().startsWith("!login")) {
+			String[] values = event.getMessage().getContentRaw().split(" ");
+			try {
+				pr0.Login.pr0Login(values[1], values[2]);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			Config.loadConfig();
 		} catch (IOException e) {
