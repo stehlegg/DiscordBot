@@ -1,7 +1,11 @@
 package pr0;
 
 import Core.Config;
-import Events.GuildMessage;
+import Core.Main;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -9,7 +13,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Login {
-	public static void pr0Login(String token, String captcha) throws IOException {
+	public static void pr0Login(String token, String captcha, TextChannel ch) throws IOException {
 
 		String body = "name=" + URLEncoder.encode(Config.getValue("pr0-name"),"UTF-8") + "&" +
 				      "password=" + URLEncoder.encode(Config.getValue("pr0-pwd"),"UTF-8") + "&" +
@@ -30,8 +34,12 @@ public class Login {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-		for(String line; (line = reader.readLine()) != null;)    {
-			System.out.println(line);
+		String output = reader.readLine();
+		if(output.contains("\"success\":true")) {
+			ch.sendMessage(output).queue();
+			Main.pc.setPresence(OnlineStatus.ONLINE, Activity.playing("pr0gramm eingeloggt"));
+		}   else    {
+			Main.pc.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
 		}
 	}
 }

@@ -24,16 +24,27 @@ public class GuildMessage extends ListenerAdapter {
 		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
 			try {
 				Captcha.getCaptcha(ch);
-			} catch (IOException e) {
+				handleDelete(event.getMessage());
+			} catch (IOException | InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 
-		if(event.getMessage().getContentRaw().startsWith("!login")) {
+		else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
-				pr0.Login.pr0Login(values[1], values[2]);
-			} catch (IOException e) {
+				pr0.Login.pr0Login(values[1], values[2], event.getChannel());
+				handleDelete(event.getMessage());
+
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		else if(event.getAuthor().isBot() && !event.getMessage().getAttachments().isEmpty()) {
+			try {
+				handleDelete(event.getMessage());
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -74,7 +85,9 @@ public class GuildMessage extends ListenerAdapter {
 				}   else {
 					clear(ch, n);
 				}
-			}   else  if(!notChs && !notCmds)  {                               //Kriterien zum Löschen der Nachricht zutreffend
+			}   else if(content.startsWith("!login"))   {
+				System.out.println("Versuche pr0 Login");
+			} else  if(!notChs && !notCmds)  {                               //Kriterien zum Löschen der Nachricht zutreffend
 				try {
 					handleDelete(msg);
 				} catch (InterruptedException e) {
@@ -110,6 +123,8 @@ public class GuildMessage extends ListenerAdapter {
 			n += 8000;
 		} else if (msg.getContentRaw().contains("https://pr0")) {
 			n = 10;
+		} else if(msg.getAuthor().isBot() && !msg.getAttachments().isEmpty()) {
+			n += 28000;
 		}
 		Thread.sleep(n);
 		msg.delete().queue();

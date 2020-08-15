@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Captcha {
+	public static String token;
 	public static void getCaptcha(TextChannel ch) throws IOException {
 		String url = "https://pr0gramm.com/api/user/captcha";
 		JSONObject json = Inspect.readJson(url);
@@ -30,6 +31,7 @@ public class Captcha {
 		File output = new File("captcha.png");
 		ImageIO.write(img, "png", output);
 
-		ch.sendFile(output).append(json.getString("token")).queue();
+		token = json.getString("token");
+		ch.sendFile(output).append(token).queue();
 	}
 }
