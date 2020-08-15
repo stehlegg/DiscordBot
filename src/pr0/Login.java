@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.managers.Presence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -15,13 +17,16 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Login {
-	public static void pr0Login(String captcha, TextChannel ch) throws IOException {
+	private static final Logger logger = pr0gramm.getLogger();
+	public static void pr0Login(String captcha) throws IOException {
 
 		////////////////////////////////////////////////////////////////////////////
 		//* Getting Discord Presence Object and reloading Config for Hot Changes *//
 		////////////////////////////////////////////////////////////////////////////
 		Presence pres = API.getPres();
 		Config.loadConfig();
+
+		logger.info("Login requested");
 
 		////////////////////////////////////////////////////////////////////////////
 		//* Constructing the Body of our HTTP Request with info from Config file *//
@@ -61,7 +66,7 @@ public class Login {
 		//* Determining if mission was succesful or we failed to log in          *//
 		////////////////////////////////////////////////////////////////////////////
 		if(output.contains("\"success\":true")) {
-			ch.sendMessage(output).queue();
+			logger.info("Login successful");
 			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("pr0gramm eingeloggt"));
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));

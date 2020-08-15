@@ -13,5 +13,7 @@
     <orderEntry type="library" name="httpcore-4.4.12" level="project" />
     <orderEntry type="library" name="httpclient-4.5.10" level="project" />
     <orderEntry type="library" name="json-20200518" level="project" />
+    <orderEntry type="library" name="logback-classic-1.2.3" level="project" />
+    <orderEntry type="library" name="logback-core-1.2.3" level="project" />
   </component>
 </module>

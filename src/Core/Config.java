@@ -1,5 +1,8 @@
 package Core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,7 +12,8 @@ import java.util.Random;
 
 public class Config {
 	private static Properties cfg;
-	private static File cfgFile = new File("cfg.properties");
+	private static final File cfgFile = new File("cfg.properties");
+	private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
 	////////////////////////////////////////////////////////////////////////////
 	//* Loading keys and values in specified config file in properties Obj   *//
@@ -40,6 +44,7 @@ public class Config {
 		String[] arr = cfg.getProperty(key).split(",");
 		Random rand = new Random();
 		int random = rand.nextInt((len));
+		logger.info("Retrieved Value for Key: " + key);
 		return arr[random];
 	}
 

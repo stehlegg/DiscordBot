@@ -6,11 +6,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+
 
 public class Main   {
 
@@ -21,7 +23,6 @@ public class Main   {
 	public static void main(String[] args) throws IllegalArgumentException, LoginException, InterruptedException, IOException {
 		initialize();
 		startBot();
-		Config.writeConfig("Hurensohn", "Lifestyle");
 	}
 
 	////////////////////////////////////////////////////////////////////////////
@@ -45,6 +46,9 @@ public class Main   {
 						new GuildMessage(),
 						new VoiceJoin())
 				.build().awaitReady();
+
+		Logger logger = API.getLogger();
+		logger.info("Logged in as: " + jda.getSelfUser().getName());
 
 		API.setAPI(jda);
 		API.setPres(jda.getPresence());

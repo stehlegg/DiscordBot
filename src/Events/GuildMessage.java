@@ -10,7 +10,6 @@ import pr0.Inspect;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 
 public class GuildMessage extends ListenerAdapter {
@@ -33,7 +32,7 @@ public class GuildMessage extends ListenerAdapter {
 		else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
-				pr0.Login.pr0Login(values[1], event.getChannel());
+				pr0.Login.pr0Login(values[1]);
 				delete(event.getMessage());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -50,37 +49,6 @@ public class GuildMessage extends ListenerAdapter {
 			e.printStackTrace();
 		}
 
-		boolean notCmds = false;
-		boolean notChs = false;
-
-		String[] cmds = new String[0];
-		String[] chs = new String[0];
-		try {
-			cmds = Config.getValue("dcmds").split(",");
-			chs = Config.getValue("mchannels").split(",");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if(Config.getValue("dcmds").isEmpty())  {
-				notCmds = false;
-			}   else    {
-				notCmds = Arrays.stream(cmds).anyMatch(msg.getContentRaw()::contains);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if(Config.getValue("mchannels").isEmpty())  {
-				notChs = false;
-			}   else    {
-				notChs = Arrays.stream(chs).anyMatch(ch.getId()::equalsIgnoreCase);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		if(content.startsWith("!")
 				|| content.startsWith(">")
@@ -95,8 +63,8 @@ public class GuildMessage extends ListenerAdapter {
 					clear(ch, n);
 				}
 			}   else if(content.startsWith("!login"))   {
-				System.out.println("Versuche pr0 Login");
-			} else  if(!notChs && !notCmds)  {                               //Kriterien zum Löschen der Nachricht zutreffend
+
+			} else    {                               //Kriterien zum Löschen der Nachricht zutreffend
 					delete(msg);
 			}
 		}
