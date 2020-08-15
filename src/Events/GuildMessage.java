@@ -118,15 +118,21 @@ public class GuildMessage extends ListenerAdapter {
 	}
 
 	public void delete(Message msg) throws InterruptedException {
-		int n = 2000;
-		if(msg.getContentRaw().startsWith("!q"))    {
-			n += 8000;
-		} else if (msg.getContentRaw().contains("https://pr0")) {
-			n = 10;
-		} else if(msg.getAuthor().isBot() && !msg.getAttachments().isEmpty()) {
-			n += 28000;
-		}
-		Thread.sleep(n);
-		msg.delete().queue();
+		new Thread(() -> {
+			int n = 2000;
+			if(msg.getContentRaw().startsWith("!q"))    {
+				n += 8000;
+			} else if (msg.getContentRaw().contains("https://pr0")) {
+				n = 10;
+			} else if(msg.getAuthor().isBot() && !msg.getAttachments().isEmpty()) {
+				n += 28000;
+			}
+			try {
+				Thread.sleep(n);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			msg.delete().queue();
+		}).start();
 	}
 }
