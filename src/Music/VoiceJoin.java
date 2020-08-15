@@ -40,6 +40,15 @@ public class VoiceJoin extends ListenerAdapter {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		try {
+			if(Config.present(id) && !guild.getAudioManager().isConnected())    {
+				String TrackUrl = Config.getValue(id);
+				//String TrackUrl = "https://www.youtube.com/watch?v=L-dNSnANKAI";
+				skipTrack(guild);
+				loadAndPlay(guild, TrackUrl, event.getChannelJoined());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
