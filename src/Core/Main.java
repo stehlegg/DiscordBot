@@ -6,8 +6,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.managers.Presence;
-import org.xml.sax.SAXException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -16,20 +14,40 @@ import java.net.CookieManager;
 
 public class Main   {
 
-	public static JDA api;
-	public static Presence pc;
+	////////////////////////////////////////////////////////////////////////////
+	//* Starting point of the Program                                        *//
+	//* Calling initialize and startBot                                      *//
+	////////////////////////////////////////////////////////////////////////////
+	public static void main(String[] args) throws IllegalArgumentException, LoginException, InterruptedException, IOException {
+		initialize();
+		startBot();
+		Config.writeConfig("Hurensohn", "Lifestyle");
+	}
 
-	public static void main(String[] args) throws IllegalArgumentException, LoginException, InterruptedException, IOException, SAXException {
-		Config.loadConfig();
+	////////////////////////////////////////////////////////////////////////////
+	//* Initializing needed variables to manage Cookies for HTTP Connection  *//
+	//* And Load the Config initially                                        *//
+	////////////////////////////////////////////////////////////////////////////
+	private static void initialize() throws IOException {
 		CookieManager cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
-		api = JDABuilder
+		Config.loadConfig();
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+	//* starting up the DiscordBot instance with Token loaded from Config    *//
+	//* write API and Presence Object to API class                           *//
+	////////////////////////////////////////////////////////////////////////////
+	private static void startBot() throws LoginException, InterruptedException, IOException {
+		JDA jda = JDABuilder
 				.createDefault(Config.getValue("token"))
 				.addEventListeners(
 						new GuildMessage(),
 						new VoiceJoin())
 				.build().awaitReady();
-		pc =  api.getPresence();
-		pc.setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("Bei pr0gramm anmelden - !login"));
+
+		API.setAPI(jda);
+		API.setPres(jda.getPresence());
+		jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("Bei pr0gramm anmelden - !login"));
 	}
 }

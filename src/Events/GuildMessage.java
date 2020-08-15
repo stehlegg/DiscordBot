@@ -24,29 +24,24 @@ public class GuildMessage extends ListenerAdapter {
 		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
 			try {
 				Captcha.getCaptcha(ch);
-				handleDelete(event.getMessage());
-			} catch (IOException | InterruptedException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			delete(event.getMessage());
 		}
 
 		else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
 				pr0.Login.pr0Login(values[1], event.getChannel());
-				handleDelete(event.getMessage());
-
-			} catch (IOException | InterruptedException e) {
+				delete(event.getMessage());
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
 		else if(event.getAuthor().isBot() && !event.getMessage().getAttachments().isEmpty()) {
-			try {
-				handleDelete(event.getMessage());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				delete(event.getMessage());
 		}
 
 		try {
@@ -55,22 +50,36 @@ public class GuildMessage extends ListenerAdapter {
 			e.printStackTrace();
 		}
 
-		boolean notCmds;
-		boolean notChs;
+		boolean notCmds = false;
+		boolean notChs = false;
 
-		String[] cmds = Config.getValue("dcmds").split(",");
-		String[] chs = Config.getValue("mchannels").split(",");
-
-		if(Config.getValue("dcmds").isEmpty())  {
-			notCmds = false;
-		}   else    {
-			notCmds = Arrays.stream(cmds).anyMatch(msg.getContentRaw()::contains);
+		String[] cmds = new String[0];
+		String[] chs = new String[0];
+		try {
+			cmds = Config.getValue("dcmds").split(",");
+			chs = Config.getValue("mchannels").split(",");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		if(Config.getValue("mchannels").isEmpty())  {
-			notChs = false;
-		}   else    {
-			notChs = Arrays.stream(chs).anyMatch(ch.getId()::equalsIgnoreCase);
+		try {
+			if(Config.getValue("dcmds").isEmpty())  {
+				notCmds = false;
+			}   else    {
+				notCmds = Arrays.stream(cmds).anyMatch(msg.getContentRaw()::contains);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			if(Config.getValue("mchannels").isEmpty())  {
+				notChs = false;
+			}   else    {
+				notChs = Arrays.stream(chs).anyMatch(ch.getId()::equalsIgnoreCase);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		if(content.startsWith("!")
@@ -88,19 +97,15 @@ public class GuildMessage extends ListenerAdapter {
 			}   else if(content.startsWith("!login"))   {
 				System.out.println("Versuche pr0 Login");
 			} else  if(!notChs && !notCmds)  {                               //Kriterien zum Löschen der Nachricht zutreffend
-				try {
-					handleDelete(msg);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+					delete(msg);
 			}
 		}
 
 		if(!event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("https://pr0gramm.com/"))  {
 			try {
 				Inspect.inspectMsg(event.getMessage());
-				handleDelete(event.getMessage());
-			} catch (IOException | URISyntaxException | InterruptedException e) {
+				delete(event.getMessage());
+			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
 		}
@@ -113,11 +118,7 @@ public class GuildMessage extends ListenerAdapter {
 		}).start();
 	}
 
-	public void handleDelete( Message msg) throws InterruptedException {
-		delete(msg);
-	}
-
-	public void delete(Message msg) throws InterruptedException {
+	public void delete(Message msg) {
 		new Thread(() -> {
 			int n = 2000;
 			if(msg.getContentRaw().startsWith("!q"))    {

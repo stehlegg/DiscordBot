@@ -1,7 +1,6 @@
 package pr0;
 
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import sun.misc.BASE64Decoder;
 
@@ -10,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class Captcha {
 	public static String token;
