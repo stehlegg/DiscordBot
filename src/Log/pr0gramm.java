@@ -1,6 +1,5 @@
-package pr0;
+package Log;
 
-import Core.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

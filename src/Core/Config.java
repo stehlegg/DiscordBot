@@ -1,7 +1,6 @@
 package Core;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,7 +12,7 @@ import java.util.Random;
 public class Config {
 	private static Properties cfg;
 	private static final File cfgFile = new File("cfg.properties");
-	private static final Logger logger = LoggerFactory.getLogger(Config.class);
+	private static final Logger logger = Log.Config.getLogger();
 
 	////////////////////////////////////////////////////////////////////////////
 	//* Loading keys and values in specified config file in properties Obj   *//

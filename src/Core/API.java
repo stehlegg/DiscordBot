@@ -31,12 +31,4 @@ public class API {
 		return pres;
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	//* Creating Logger object to log stuff                                  *//
-	//* Getter for Logger object                                             *//
-	////////////////////////////////////////////////////////////////////////////
-	private static final Logger logger = LoggerFactory.getLogger(API.class);
-	public static Logger getLogger()    {
-		return logger;
-	}
 }

@@ -6,15 +6,19 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-
+import java.net.URI;
+import java.util.*;
 
 public class Main   {
+	public static CookieManager cookieManager;
 
 	////////////////////////////////////////////////////////////////////////////
 	//* Starting point of the Program                                        *//
@@ -30,7 +34,7 @@ public class Main   {
 	//* And Load the Config initially                                        *//
 	////////////////////////////////////////////////////////////////////////////
 	private static void initialize() throws IOException {
-		CookieManager cookieManager = new CookieManager();
+		cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
 		Config.loadConfig();
 	}
@@ -47,7 +51,7 @@ public class Main   {
 						new VoiceJoin())
 				.build().awaitReady();
 
-		Logger logger = API.getLogger();
+		Logger logger = Log.Discord.getLogger();
 		logger.info("Logged in as: " + jda.getSelfUser().getName());
 
 		API.setAPI(jda);
