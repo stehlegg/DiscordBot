@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pr0.Captcha;
 import pr0.Inspect;
 
@@ -13,35 +15,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class GuildMessage extends ListenerAdapter {
+	private static final Logger logger = LoggerFactory.getLogger(Config.class);
+
 
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		Message msg = event.getMessage();
 		String content = msg.getContentRaw();
 		TextChannel ch = event.getMessage().getTextChannel();
-
-		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
-			try {
-				Captcha.getCaptcha(ch);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			delete(event.getMessage());
-		}
-
-		else if(event.getMessage().getContentRaw().startsWith("!login")) {
-			String[] values = event.getMessage().getContentRaw().split(" ");
-			try {
-				pr0.Login.pr0Login(values[1]);
-				delete(event.getMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		else if(event.getAuthor().isBot() && !event.getMessage().getAttachments().isEmpty()) {
-				delete(event.getMessage());
-		}
 
 		try {
 			Config.loadConfig();
@@ -50,7 +31,32 @@ public class GuildMessage extends ListenerAdapter {
 		}
 
 
-		if(content.startsWith("!")
+		if(Captcha.token != null && msg.getContentRaw().contains(Captcha.token)) {
+			Captcha.capMsg = msg;
+		}
+
+		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
+			try {
+				if(Captcha.capMsg != null)  {
+					Captcha.capMsg.delete().queue();
+				}
+				Captcha.getCaptcha(ch);
+				msg.delete().queue();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if(event.getMessage().getContentRaw().startsWith("!login")) {
+			String[] values = event.getMessage().getContentRaw().split(" ");
+			if(values[1] != null && Captcha.capMsg != null) {
+				Captcha.capMsg.delete().queue();
+				try {
+					pr0.Login.pr0Login(values[1]);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				msg.delete().queue();
+			}
+		}  else if(content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")
 				|| msg.getAuthor().getName().contains("Rythm")) {
@@ -62,9 +68,7 @@ public class GuildMessage extends ListenerAdapter {
 				}   else {
 					clear(ch, n);
 				}
-			}   else if(content.startsWith("!login"))   {
-
-			} else    {                               //Kriterien zum Löschen der Nachricht zutreffend
+			}    else    {                               //Kriterien zum Löschen der Nachricht zutreffend
 					delete(msg);
 			}
 		}
@@ -93,8 +97,6 @@ public class GuildMessage extends ListenerAdapter {
 				n += 8000;
 			} else if (msg.getContentRaw().contains("https://pr0")) {
 				n = 10;
-			} else if(msg.getAuthor().isBot() && !msg.getAttachments().isEmpty()) {
-				n += 28000;
 			}
 			try {
 				Thread.sleep(n);

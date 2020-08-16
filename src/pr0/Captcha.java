@@ -1,5 +1,6 @@
 package pr0;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.json.JSONObject;
 import sun.misc.BASE64Decoder;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public class Captcha {
 	public static String token;
+	public static Message capMsg;
 	public static void getCaptcha(TextChannel ch) throws IOException {
 		String url = "https://pr0gramm.com/api/user/captcha";
 		JSONObject json = Inspect.readJson(url);

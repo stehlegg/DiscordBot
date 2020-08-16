@@ -28,12 +28,15 @@ public class Login {
 
 		logger.info("Login requested");
 
+		String name = Config.getValue("pr0-name");
+		String pwd = Config.getValue("pr0-pwd");
+
 		////////////////////////////////////////////////////////////////////////////
 		//* Constructing the Body of our HTTP Request with info from Config file *//
 		//* Token from the generated Captcha and argument by the User            *//
 		////////////////////////////////////////////////////////////////////////////
-		String body = "name=" + URLEncoder.encode(Config.getValue("pr0-name"),"UTF-8") + "&" +
-				      "password=" + URLEncoder.encode(Config.getValue("pr0-pwd"),"UTF-8") + "&" +
+		String body = "name=" + URLEncoder.encode(name,"UTF-8") + "&" +
+				      "password=" + URLEncoder.encode(pwd,"UTF-8") + "&" +
 				      "token=" + URLEncoder.encode(Captcha.token,"UTF-8") + "&" +
 				      "captcha=" + URLEncoder.encode(captcha,"UTF-8");
 
@@ -66,8 +69,8 @@ public class Login {
 		//* Determining if mission was succesful or we failed to log in          *//
 		////////////////////////////////////////////////////////////////////////////
 		if(output.contains("\"success\":true")) {
-			logger.info("Login successful");
-			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("pr0gramm eingeloggt"));
+			logger.info("Login successful as:  via Captcha " + captcha + " for " + Captcha.token);
+			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("Logged in as: "));
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
 		}
