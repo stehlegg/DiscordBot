@@ -2,14 +2,10 @@ package pr0;
 
 import Core.API;
 import Core.Config;
-import Core.Main;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.managers.Presence;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -18,6 +14,7 @@ import java.net.URLEncoder;
 
 public class Login {
 	private static final Logger logger = pr0gramm.getLogger();
+	public static boolean loggedIn = false;
 	public static void pr0Login(String captcha) throws IOException {
 
 		////////////////////////////////////////////////////////////////////////////
@@ -66,11 +63,13 @@ public class Login {
 		String output = reader.readLine();
 
 		////////////////////////////////////////////////////////////////////////////
-		//* Determining if mission was succesful or we failed to log in          *//
+		//* Determining if mission was successful or we failed to log in          *//
 		////////////////////////////////////////////////////////////////////////////
 		if(output.contains("\"success\":true")) {
 			logger.info("Login successful as:  via Captcha " + captcha + " for " + Captcha.token);
 			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("Logged in as: "));
+			loggedIn = true;
+			Captcha.capMsg = null;
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
 		}

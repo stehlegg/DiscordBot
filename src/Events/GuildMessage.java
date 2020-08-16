@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pr0.Captcha;
 import pr0.Inspect;
+import pr0.Login;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -36,26 +37,29 @@ public class GuildMessage extends ListenerAdapter {
 		}
 
 		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
+
 			try {
 				if(Captcha.capMsg != null)  {
 					Captcha.capMsg.delete().queue();
 				}
-				Captcha.getCaptcha(ch);
+				if(!Login.loggedIn)  {
+					Captcha.getCaptcha(ch);
+				}
 				msg.delete().queue();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
-			if(values[1] != null && Captcha.capMsg != null) {
+			if(values[1] != null && Captcha.capMsg != null && !Login.loggedIn) {
 				Captcha.capMsg.delete().queue();
 				try {
 					pr0.Login.pr0Login(values[1]);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				msg.delete().queue();
 			}
+			msg.delete().queue();
 		}  else if(content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")
