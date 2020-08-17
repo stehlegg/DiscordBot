@@ -39,7 +39,7 @@ public class Login {
 				      "captcha=" + URLEncoder.encode(captcha,"UTF-8");
 
 		////////////////////////////////////////////////////////////////////////////
-		//* Connection to given URL                                               *//
+		//* Connection to given URL                                              *//
 		//* Prepare connection for POST request                                  *//
 		////////////////////////////////////////////////////////////////////////////
 		URL url = new URL("https://pr0gramm.com/api/user/login/post/");
@@ -64,7 +64,7 @@ public class Login {
 		String output = reader.readLine();
 
 		////////////////////////////////////////////////////////////////////////////
-		//* Determining if mission was successful or we failed to log in          *//
+		//* Determining if mission was successful or we failed to log in         *//
 		////////////////////////////////////////////////////////////////////////////
 		if(output.contains("\"success\":true")) {
 			logger.info("Login successful as:  via Captcha " + captcha + " for " + Captcha.token);

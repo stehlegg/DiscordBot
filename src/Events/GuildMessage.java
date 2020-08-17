@@ -5,8 +5,6 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pr0.Captcha;
 import pr0.Inspect;
 import pr0.Login;
@@ -16,9 +14,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class GuildMessage extends ListenerAdapter {
-	private static final Logger logger = LoggerFactory.getLogger(Config.class);
-
-
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		Message msg = event.getMessage();
@@ -31,13 +26,11 @@ public class GuildMessage extends ListenerAdapter {
 			e.printStackTrace();
 		}
 
-
 		if(Captcha.token != null && msg.getContentRaw().contains(Captcha.token)) {
 			Captcha.capMsg = msg;
 		}
 
 		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
-
 			try {
 				if(Captcha.capMsg != null)  {
 					Captcha.capMsg.delete().queue();
@@ -60,7 +53,8 @@ public class GuildMessage extends ListenerAdapter {
 				}
 			}
 			msg.delete().queue();
-		}  else if(content.startsWith("!")
+		}  else if(!event.getGuild().getId().equals("690654418869420162") &&
+				content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")
 				|| msg.getAuthor().getName().contains("Rythm")) {
@@ -77,7 +71,7 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		}
 
-		if(!event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("https://pr0gramm.com/"))  {
+		if(!event.getGuild().getId().equals("690654418869420162") && !event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("https://pr0gramm.com/"))  {
 			try {
 				Inspect.inspectMsg(event.getMessage());
 				delete(event.getMessage());

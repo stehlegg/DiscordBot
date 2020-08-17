@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Random;
@@ -25,16 +24,6 @@ public class Config {
 	}
 
 	////////////////////////////////////////////////////////////////////////////
-	//* Write Key and Value in config property and to config file            *//
-	////////////////////////////////////////////////////////////////////////////
-	public static void writeConfig(String key, String value) throws IOException {
-		cfg.put(key, value);
-		FileWriter writer = new FileWriter(cfgFile);
-		cfg.store(writer,null);
-		writer.close();
-	}
-
-	////////////////////////////////////////////////////////////////////////////
 	//* Loading Config and getter for specified values from cfg              *//
 	////////////////////////////////////////////////////////////////////////////
 	public static String getValue(String key) throws IOException {
@@ -50,7 +39,7 @@ public class Config {
 	////////////////////////////////////////////////////////////////////////////
 	//* Checking if a value for a specified key is present in the config     *//
 	////////////////////////////////////////////////////////////////////////////
-	public static boolean present(String key) throws IOException {
+	public static boolean isPresent(String key) throws IOException {
 		loadConfig();
 		return cfg.getProperty(key) != null;
 	}

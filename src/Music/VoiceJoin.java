@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,20 +21,23 @@ import java.util.Map;
 
 public class VoiceJoin extends ListenerAdapter {
 	private static Guild guild;
+	private static final Logger logger = Log.Voice.getLogger();
 
 	@Override
 	public void onGuildVoiceJoin(GuildVoiceJoinEvent event)  {
 		String id = event.getMember().getId();
 		Guild guild = event.getGuild();
 		VoiceJoin.guild = guild;
-		System.out.println("Joined");
+
+		logger.info(event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()
+		+ " has joined " + event.getChannelJoined().getName() + " in " + event.getGuild().getName());
 		try {
 			Config.loadConfig();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			if(Config.present(id) && !guild.getAudioManager().isConnected())    {
+			if(Config.isPresent(id) && !guild.getAudioManager().isConnected())    {
 				String TrackUrl = Config.getValue(id);
 				skipTrack(guild);
 				loadAndPlay(guild, TrackUrl, event.getChannelJoined());
@@ -78,14 +82,11 @@ public class VoiceJoin extends ListenerAdapter {
 			@Override
 			public void playlistLoaded(AudioPlaylist playlist) {
 				AudioTrack firstTrack = playlist.getSelectedTrack();
-
 				if (firstTrack == null) {
 					firstTrack = playlist.getTracks().get(0);
 				}
-
 				play(guild, musicManager, firstTrack, vc);
 			}
-
 			@Override
 			public void noMatches() {
 				System.out.println("no matches");
