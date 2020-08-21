@@ -14,7 +14,6 @@ import java.util.Date;
 
 public class Inspect {
 	public static void inspectMsg(Message msg) throws IOException {
-		//https://pr0gramm.com/top/API/3273699
 		String poster = msg.getAuthor().getName();
 		String[] msgSplit = msg.getContentRaw().split(" ");
 		String url = "";
@@ -97,11 +96,11 @@ public class Inspect {
 		if(j2.get("image").toString().contains("mp4"))  {
 			imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
 			Embeds.createVideo(ch,title,Author,footer,imgUrl,postUrl, newDate, cat,poster);
-			Log.pr0gramm.getLogger().info("Created VIDEO Embed of " + id + " in " + ch.getName());
+			Log.pr0gramm.getLogger().info("Created VIDEO Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}   else    {
 			imgUrl = "https://img.pr0gramm.com/" + j2.get("image");
 			Embeds.createImage(ch,title,Author,footer,imgUrl,postUrl, newDate, cat, poster);
-			Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + id + " in " + ch.getName());
+			Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}
 	}
 
@@ -125,7 +124,7 @@ public class Inspect {
 				String commURL = postURL + ":comment" + commID;
 				String commentText = j2.getString("content");
 				Embeds.createComment(ch,author,commURL,commentText,benis,newDate,postURL,poster);
-				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + "of" + postID + " in " + ch.getName());
+				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + " (" + postID + ")" + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 				break;
 			}
 		}
