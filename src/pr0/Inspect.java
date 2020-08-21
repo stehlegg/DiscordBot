@@ -71,8 +71,7 @@ public class Inspect {
 		int up = j2.getInt("up");
 		int down = j2.getInt("down");
 		int result = up - down;
-		String title = "\"" + topTags(id) + "\"" + " von " + Author;
-		String footer = "Benis: " + result + ", Davon Blussi: " + up + ", und Minus: " + down;
+		String title = "\"" + topTags(id) + "\"";
 		String date = j2.get("created").toString();
 		String newDate = formatDate(date);
 		int flag = j2.getInt("flags");
@@ -92,14 +91,16 @@ public class Inspect {
 				cat = "nsfp";
 				break;
 		}
+		String footer = "Kategorie: "+cat+ " | Blussi: " + up + ", Minus: " + down;
+
 
 		if(j2.get("image").toString().contains("mp4"))  {
 			imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
-			Embeds.createVideo(ch,title,Author,footer,imgUrl,postUrl, newDate, cat,poster);
+			Embeds.createVideo(ch,title,Author,footer,imgUrl,postUrl, newDate, cat,poster, result);
 			Log.pr0gramm.getLogger().info("Created VIDEO Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}   else    {
 			imgUrl = "https://img.pr0gramm.com/" + j2.get("image");
-			Embeds.createImage(ch,title,Author,footer,imgUrl,postUrl, newDate, cat, poster);
+			Embeds.createImage(ch,title,Author,footer,imgUrl,postUrl, newDate, cat, poster, result);
 			Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}
 	}
@@ -123,7 +124,7 @@ public class Inspect {
 				String postURL = "https://pr0gramm.com/new/" + postID;
 				String commURL = postURL + ":comment" + commID;
 				String commentText = j2.getString("content");
-				Embeds.createComment(ch,author,commURL,commentText,benis,newDate,postURL,poster);
+				Embeds.createComment(ch,author,commURL,commentText,benis,newDate,postURL,poster, result);
 				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + " (" + postID + ")" + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 				break;
 			}

@@ -11,31 +11,31 @@ public class Embeds {
 	////////////////////////////////////////////////////////////////////////////
 	//* Building a Discord Embed with all specified Infos from arguments     *//
 	////////////////////////////////////////////////////////////////////////////
-	public static void createImage(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster) {
+	public static void createImage(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster, int benis) {
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle(title, postUrl);
 		String autorLink = "https://pr0gramm.com/user/" + Author;
 		eb.addField("Uploader", "["+Author+"]"+"("+autorLink+")", true)
 				.addField("Datum", date, true)
-				.addField("Kategorie", cat, true);
+				.addField("Benis", String.valueOf(benis), true);
 		eb.setFooter("Gesendet von: " + poster + " | " + footer);
 		eb.setImage(imgUrl);
 		if(!cat.contains("nsfl"))
 			ch.sendMessage(eb.build()).queue();
 	}
-	public static void createVideo(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster) throws IOException {
+	public static void createVideo(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster, int benis) throws IOException {
 		EmbedBuilder eb = new EmbedBuilder();
 		InputStream file = new URL(imgUrl).openStream();
 		eb.setTitle(title, postUrl);
 		String autorLink = "https://pr0gramm.com/user/" + Author;
 		eb.addField("Uploader", "["+Author+"]"+"("+autorLink+")", true)
 				.addField("Datum", date, true)
-				.addField("Kategorie", cat, true);
+				.addField("Benis", String.valueOf(benis), true);
 		eb.setFooter("Gesendet von: " + poster + " | " + footer);
 		if(!cat.contains("nsfl"))
 			ch.sendFile(file, "video.mp4").embed(eb.build()).queue();
 	}
-	public static void createComment(TextChannel ch, String author, String commUrl, String comment, String benis, String date, String postUrl, String poster)  {
+	public static void createComment(TextChannel ch, String author, String commUrl, String comment, String benis, String date, String postUrl, String poster, int result)  {
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle("Kommentar von " + author, commUrl);
 		eb.setDescription(comment);
