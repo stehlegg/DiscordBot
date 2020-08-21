@@ -1,7 +1,6 @@
 package pr0;
 
 import Core.Embeds;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.json.JSONArray;
@@ -10,19 +9,18 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.*;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Inspect {
-	public static void inspectMsg(Message msg) throws IOException, URISyntaxException, ParseException {
+	public static void inspectMsg(Message msg) throws IOException {
 		//https://pr0gramm.com/top/API/3273699
 		String poster = msg.getAuthor().getName();
 		String[] msgSplit = msg.getContentRaw().split(" ");
 		String url = "";
-		for(int i = 0; i < msgSplit.length; i++)    {
-			if(msgSplit[i].contains("https://pr0gramm.com/"))   {
-				url = msgSplit[i];
+		for (String s : msgSplit) {
+			if (s.contains("https://pr0gramm.com/")) {
+				url = s;
 			}
 		}
 		String[] urlSplit = url.split("/");
@@ -48,14 +46,10 @@ public class Inspect {
 	}
 
 	public static JSONObject readJson(String url)   throws IOException  {
-		InputStream in = new URL(url).openStream();
-		try {
+		try (InputStream in = new URL(url).openStream()) {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String jsonText = readAll(reader);
-			JSONObject json = new JSONObject(jsonText);
-			return json;
-		} finally {
-			in.close();
+			return new JSONObject(jsonText);
 		}
 	}
 
@@ -64,11 +58,10 @@ public class Inspect {
 		JSONObject json = readJson(url);
 		JSONArray array = json.getJSONArray("tags");
 		JSONObject j2 = array.getJSONObject(0);
-		String topTag = j2.getString("tag");
-		return topTag;
+		return j2.getString("tag");
 	}
 
-	public static void inspectApiUpload(int id, TextChannel ch, String poster) throws IOException, ParseException {
+	public static void inspectApiUpload(int id, TextChannel ch, String poster) throws IOException {
 		String url = "https://pr0gramm.com/api/items/get?flags=15&id=" + id;
 		JSONObject json = readJson(url);
 		JSONArray array = json.getJSONArray("items");
@@ -141,7 +134,6 @@ public class Inspect {
 	public static String formatDate(String date)    {
 		DateFormat format= new SimpleDateFormat("dd.MM.yyyy");
 		Date dateFormatted = new Date(Long.parseLong(date)*1000);
-		String newDate = format.format(dateFormatted);
-		return newDate;
+		return format.format(dateFormatted);
 	}
 }

@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Embeds {

@@ -20,7 +20,7 @@ public class Captcha {
 		String encoded = json.get("captcha").toString();
 		String base64 = encoded.split(",")[1];
 		base64.replace("\\","");
-		BufferedImage img = null;
+		BufferedImage img;
 		byte[] imgBytes;
 		BASE64Decoder decode = new BASE64Decoder();
 		imgBytes = decode.decodeBuffer(base64);

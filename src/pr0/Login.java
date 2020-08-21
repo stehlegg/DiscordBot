@@ -70,10 +70,9 @@ public class Login {
 			logger.info("Login successful as:  via Captcha " + captcha + " for " + Captcha.token);
 			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("Logged in as: "));
 			loggedIn = true;
-			Captcha.capMsg = null;
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
-			Captcha.capMsg = null;
 		}
+		Captcha.capMsg = null;
 	}
 }

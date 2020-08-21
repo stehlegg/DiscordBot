@@ -10,8 +10,6 @@ import pr0.Inspect;
 import pr0.Login;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.List;
 
 public class GuildMessage extends ListenerAdapter {
@@ -75,7 +73,7 @@ public class GuildMessage extends ListenerAdapter {
 			try {
 				Inspect.inspectMsg(event.getMessage());
 				delete(event.getMessage());
-			} catch (IOException | URISyntaxException | ParseException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
