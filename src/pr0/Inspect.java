@@ -18,16 +18,22 @@ public class Inspect {
 	public static void inspectMsg(Message msg) throws IOException, URISyntaxException, ParseException {
 		//https://pr0gramm.com/top/API/3273699
 		String poster = msg.getAuthor().getName();
+		String[] msgSplit = msg.getContentRaw().split(" ");
+		String url = "";
+		for(int i = 0; i < msgSplit.length; i++)    {
+			if(msgSplit[i].contains("https://pr0gramm.com/"))   {
+				url = msgSplit[i];
+			}
+		}
+		String[] urlSplit = url.split("/");
 		if(msg.getContentRaw().contains("comment"))    {
-			String[] url = msg.getContentRaw().split("/");
-			String[] ids = url[url.length-1].split(":");
+			String[] ids = urlSplit[urlSplit.length-1].split(":");
 			String postID = ids[0];
 			String commID = ids[1];
 			inspectApiComment(msg.getTextChannel(), postID, commID, poster);
 		}   else    {
-			String[] url = msg.getContentRaw().split("/");
-			int len = url.length - 1;
-			int id = Integer.parseInt(url[len]);
+			int len = urlSplit.length - 1;
+			int id = Integer.parseInt(urlSplit[len]);
 			inspectApiUpload(id, msg.getTextChannel(), poster);
 		}
 	}
@@ -98,9 +104,11 @@ public class Inspect {
 		if(j2.get("image").toString().contains("mp4"))  {
 			imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
 			Embeds.createVideo(ch,title,Author,footer,imgUrl,postUrl, newDate, cat,poster);
+			Log.pr0gramm.getLogger().info("Created VIDEO Embed of " + id + " in " + ch.getName());
 		}   else    {
 			imgUrl = "https://img.pr0gramm.com/" + j2.get("image");
 			Embeds.createImage(ch,title,Author,footer,imgUrl,postUrl, newDate, cat, poster);
+			Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + id + " in " + ch.getName());
 		}
 	}
 
@@ -124,14 +132,10 @@ public class Inspect {
 				String commURL = postURL + ":comment" + commID;
 				String commentText = j2.getString("content");
 				Embeds.createComment(ch,author,commURL,commentText,benis,newDate,postURL,poster);
+				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + "of" + postID + " in " + ch.getName());
 				break;
 			}
 		}
-
-
-
-
-
 	}
 
 	public static String formatDate(String date)    {
@@ -141,5 +145,3 @@ public class Inspect {
 		return newDate;
 	}
 }
-
-//1 sfw, 2nsfw, 8nsfp, 4nsfl
