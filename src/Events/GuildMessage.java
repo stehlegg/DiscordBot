@@ -11,6 +11,7 @@ import pr0.Login;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.List;
 
 public class GuildMessage extends ListenerAdapter {
@@ -54,10 +55,10 @@ public class GuildMessage extends ListenerAdapter {
 			}
 			msg.delete().queue();
 		}  else if(!event.getGuild().getId().equals("690654418869420162") &&
-				content.startsWith("!")
+				(content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")
-				|| msg.getAuthor().getName().contains("Rythm")) {
+				|| msg.getAuthor().getName().contains("Rythm"))) {
 			if(content.startsWith("!delete"))    {       //Kommando zum Löschen mehrerer Nachricht
 				String[] cmd = content.split(" ");
 				int n = Integer.parseInt(cmd[1]);
@@ -70,12 +71,11 @@ public class GuildMessage extends ListenerAdapter {
 					delete(msg);
 			}
 		}
-
-		if(!event.getGuild().getId().equals("690654418869420162") && !event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("https://pr0gramm.com/"))  {
+		if(!event.getAuthor().isBot() && msg.getContentRaw().contains("https://pr0gramm.com/"))  {
 			try {
 				Inspect.inspectMsg(event.getMessage());
 				delete(event.getMessage());
-			} catch (IOException | URISyntaxException e) {
+			} catch (IOException | URISyntaxException | ParseException e) {
 				e.printStackTrace();
 			}
 		}

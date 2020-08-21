@@ -73,6 +73,7 @@ public class Login {
 			Captcha.capMsg = null;
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
+			Captcha.capMsg = null;
 		}
 	}
 }
