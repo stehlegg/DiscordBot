@@ -76,6 +76,7 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		}  else if(msg.getContentRaw().startsWith("!log"))  {
 			Log.LogFIle.getLogFile(ch);
+			msg.delete().queue();
 		} else if(!event.getGuild().getId().equals("690654418869420162") &&
 				(content.startsWith("!")
 				|| content.startsWith(">")

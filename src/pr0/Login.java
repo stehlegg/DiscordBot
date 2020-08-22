@@ -70,6 +70,10 @@ public class Login {
 			logger.info("Login successful as:  via Captcha " + captcha + " for " + Captcha.token);
 			pres.setPresence(OnlineStatus.ONLINE, Activity.playing("Logged in as: "));
 			loggedIn = true;
+			File file = new File("captcha.png");
+			if(file.delete())   {
+				logger.info("captcha file deleted");
+			}
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
 		}
