@@ -16,7 +16,11 @@ import static Core.JSON.readJson;
 
 public class Inspect {
 	public static void inspectMsg(Message msg) throws IOException {
-		String poster = msg.getMember().getNickname();
+		String poster;
+		if(msg.getMember().getNickname() == null)
+			poster = msg.getAuthor().getName();
+		else
+			poster = msg.getMember().getNickname();
 		String[] msgSplit = msg.getContentRaw().split(" ");
 		String url = "";
 		for (String s : msgSplit) {
