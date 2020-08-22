@@ -12,7 +12,7 @@ import static pr0.Inspect.formatDate;
 
 public class GetNewest {
 	public static void inspectUser(TextChannel ch, String name, String poster) throws IOException {
-		JSONObject json = JSON.readJson("https://pr0gramm.com/api/items/get?user=" + name);
+		JSONObject json = JSON.readJson("https://pr0gramm.com/api/items/get?flags=15&user=" + name);
 		JSONArray array = json.getJSONArray("items");
 		JSONObject j2 = array.getJSONObject(0);
 		String cat = "";

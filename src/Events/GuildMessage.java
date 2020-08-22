@@ -55,11 +55,22 @@ public class GuildMessage extends ListenerAdapter {
 		} else if(event.getMessage().getContentRaw().startsWith("!me")) {
 			try {
 				if(event.getMessage().getContentRaw().endsWith("!me"))  {
-					pr0.GetNewest.inspectUser(event.getChannel(), event.getMember().getNickname(), event.getMember().getNickname());
+					if(event.getMember().getNickname() == null)    {
+						System.out.println("null=???");
+						pr0.GetNewest.inspectUser(event.getChannel(), event.getAuthor().getName(), event.getAuthor().getName());
+					}   else    {
+						System.out.println("nich null=???");
+						pr0.GetNewest.inspectUser(event.getChannel(), event.getMember().getNickname(), event.getMember().getNickname());
+					}
 				}   else    {
 					String arg = event.getMessage().getContentRaw().split(" ")[1];
-					pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getMember().getNickname());
+					if(event.getMember().getNickname() == null)    {
+						pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getAuthor().getName());
+					}   else    {
+						pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getMember().getNickname());
+					}
 				}
+				msg.delete().queue();
 			}   catch (IOException e)   {
 				e.printStackTrace();
 			}
