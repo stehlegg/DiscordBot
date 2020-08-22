@@ -14,8 +14,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 
 public class Main   {
-	public static CookieManager cookieManager;
-
 	////////////////////////////////////////////////////////////////////////////
 	//* Starting point of the Program                                        *//
 	//* Calling initialize and startBot                                      *//
@@ -30,7 +28,7 @@ public class Main   {
 	//* And Load the Config initially                                        *//
 	////////////////////////////////////////////////////////////////////////////
 	private static void initialize() throws IOException {
-		cookieManager = new CookieManager();
+		CookieManager cookieManager = new CookieManager();
 		CookieHandler.setDefault(cookieManager);
 		Config.loadConfig();
 	}

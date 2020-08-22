@@ -49,8 +49,7 @@ public class Inspect {
 
 	public static void inspectApiUpload(int id, TextChannel ch, String poster) throws IOException {
 		JSONObject json = readJson("https://pr0gramm.com/api/items/get?flags=15&id=" + id);
-		JSONArray array = json.getJSONArray("items");
-		JSONObject j2 = array.getJSONObject(0);
+		JSONObject j2 = json.getJSONArray("items").getJSONObject(0);
 
 		String cat = "";
 		switch(j2.getInt("flags"))    {
@@ -69,7 +68,7 @@ public class Inspect {
 		}
 
 		int[] benis = {j2.getInt("up"),j2.getInt("down"), (j2.getInt("up")-j2.getInt("down"))};
-		String[] infos = {j2.get("user").toString(), "https://pr0gramm.com/" + id, "\"" + topTags(id) + "\"",formatDate(j2.get("created").toString()),cat,"Kategorie: "+cat+ " | Blussi: " + benis[0] + ", Minus: " + benis[1], poster};
+		String[] infos = {j2.get("user").toString(), "https://pr0gramm.com/new/" + id, "\"" + topTags(id) + "\"",formatDate(j2.get("created").toString()),cat,"Kategorie: "+cat+ " | Blussi: " + benis[0] + ", Minus: " + benis[1], poster};
 
 		if(j2.get("image").toString().contains("mp4"))  {
 			String imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
@@ -85,10 +84,9 @@ public class Inspect {
 	public static void inspectApiComment(TextChannel ch, String postID, String commID, String poster) throws IOException {
 		JSONObject json = readJson("https://pr0gramm.com/api/items/info?itemId=" + postID);
 		JSONArray array = json.getJSONArray("comments");
-		JSONObject j2;
 		for(int i = 0; i < array.length(); i++) {
 			if(array.getJSONObject(i).get("id").toString().equals(commID))   {
-				j2 = array.getJSONObject(i);
+				JSONObject j2 = array.getJSONObject(i);
 				String[] infos = {formatDate(j2.get("created").toString()), j2.getString("name"), "https://pr0gramm.com/new/" + postID, "https://pr0gramm.com/new/" + postID + ":comment" + commID, j2.getString("content"), poster,(j2.getInt("up") - j2.getInt("down")) + " Benis (" + j2.getInt("up") + " - " + j2.getInt("down") +")", String.valueOf(j2.getInt("up") - j2.getInt("down"))};
 				Embeds.createComment(ch, infos);
 				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + " (" + postID + ")" + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
