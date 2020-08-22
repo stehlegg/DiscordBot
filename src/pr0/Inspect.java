@@ -25,12 +25,11 @@ public class Inspect {
 		String[] urlSplit = url.split("/");
 		if(msg.getContentRaw().contains("comment"))    {
 			String[] ids = urlSplit[urlSplit.length-1].split(":");
-			String postID = ids[0];
-			String commID = ids[1];
+			String postID = ids[0].replaceAll("[^0-9]","");
+			String commID = ids[1].replaceAll("[^0-9]","");
 			inspectApiComment(msg.getTextChannel(), postID, commID, poster);
 		}   else    {
-			int len = urlSplit.length - 1;
-			int id = Integer.parseInt(urlSplit[len]);
+			int id = Integer.parseInt(urlSplit[urlSplit.length-1].replaceAll("[^0-9]",""));
 			inspectApiUpload(id, msg.getTextChannel(), poster);
 		}
 	}
@@ -65,19 +64,9 @@ public class Inspect {
 		JSONObject json = readJson(url);
 		JSONArray array = json.getJSONArray("items");
 		JSONObject j2 = array.getJSONObject(0);
-		String imgUrl;
-		String Author = j2.get("user").toString();
-		String postUrl = "https://pr0gramm.com/new/" + id;
-		int up = j2.getInt("up");
-		int down = j2.getInt("down");
-		int result = up - down;
-		String title = "\"" + topTags(id) + "\"";
-		String date = j2.get("created").toString();
-		String newDate = formatDate(date);
-		int flag = j2.getInt("flags");
 
 		String cat = "";
-		switch(flag)    {
+		switch(j2.getInt("flags"))    {
 			case 1:
 				cat = "sfw";
 				break;
@@ -91,16 +80,17 @@ public class Inspect {
 				cat = "nsfp";
 				break;
 		}
-		String footer = "Kategorie: "+cat+ " | Blussi: " + up + ", Minus: " + down;
 
+		int[] benis = {j2.getInt("up"),j2.getInt("down"), j2.getInt("up")-j2.getInt("down")};
+		String[] infos = {j2.get("user").toString(), "https://pr0gramm.com/" + id, "\"" + topTags(id) + "\"",formatDate(j2.get("created").toString()),cat,"Kategorie: "+cat+ " | Blussi: " + benis[2] + ", Minus: " + benis[1], poster};
 
 		if(j2.get("image").toString().contains("mp4"))  {
-			imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
-			Embeds.createVideo(ch,title,Author,footer,imgUrl,postUrl, newDate, cat,poster, result);
+			String imgUrl = "https://vid.pr0gramm.com/" + j2.get("image");
+			Embeds.createVideo(ch, infos, benis[0], imgUrl);
 			Log.pr0gramm.getLogger().info("Created VIDEO Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}   else    {
-			imgUrl = "https://img.pr0gramm.com/" + j2.get("image");
-			Embeds.createImage(ch,title,Author,footer,imgUrl,postUrl, newDate, cat, poster, result);
+			String imgUrl = "https://img.pr0gramm.com/" + j2.get("image");
+			Embeds.createImage(ch, infos, benis[0], imgUrl);
 			Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + id + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 		}
 	}
@@ -110,21 +100,11 @@ public class Inspect {
 		JSONObject json = readJson(url);
 		JSONArray array = json.getJSONArray("comments");
 		JSONObject j2;
-		commID = commID.split("t")[1];
 		for(int i = 0; i < array.length(); i++) {
 			if(array.getJSONObject(i).get("id").toString().equals(commID))   {
 				j2 = array.getJSONObject(i);
-				int up = j2.getInt("up");
-				int down = j2.getInt("down");
-				int result = up-down;
-				String benis = result + "Benis (" + up + " - " + down +")";
-				String date = j2.get("created").toString();
-				String newDate = formatDate(date);
-				String author = j2.getString("name");
-				String postURL = "https://pr0gramm.com/new/" + postID;
-				String commURL = postURL + ":comment" + commID;
-				String commentText = j2.getString("content");
-				Embeds.createComment(ch,author,commURL,commentText,benis,newDate,postURL,poster, result);
+				String[] infos = {formatDate(j2.get("created").toString()), j2.getString("name"), "https://pr0gramm.com/new/" + postID, "https://pr0gramm.com/new/" + postID + ":comment" + commID, j2.getString("content"), poster,(j2.getInt("up") - j2.getInt("down")) + " Benis (" + j2.getInt("up") + " - " + j2.getInt("down") +")", String.valueOf(j2.getInt("up") - j2.getInt("down"))};
+				Embeds.createComment(ch, infos);
 				Log.pr0gramm.getLogger().info("Created COMMENT Embed of " + commID + " (" + postID + ")" + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 				break;
 			}

@@ -3,50 +3,47 @@ package Core;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
 public class Embeds {
+
+	static EmbedBuilder eb = new EmbedBuilder();
 	////////////////////////////////////////////////////////////////////////////
 	//* Building a Discord Embed with all specified Infos from arguments     *//
 	////////////////////////////////////////////////////////////////////////////
-	public static void createImage(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster, int benis) {
-		EmbedBuilder eb = new EmbedBuilder();
-		eb.setTitle(title, postUrl);
-		String autorLink = "https://pr0gramm.com/user/" + Author;
-		eb.addField("Uploader", "["+Author+"]"+"("+autorLink+")", true)
-				.addField("Datum", date, true)
-				.addField("Benis", String.valueOf(benis), true);
-		eb.setFooter("Gesendet von: " + poster + " | " + footer);
-		eb.setImage(imgUrl);
-		if(!cat.contains("nsfl"))
+	public static void createImage(TextChannel ch, String[] infos, int benis, String imgUrl) {
+		eb.clear();
+		eb.setTitle(infos[2], infos[1])
+				.addField("Uploader", "["+infos[0]+"]"+"("+"https://pr0gramm.com/user/" + infos[0]+")", true)
+				.addField("Datum", infos[3], true)
+				.addField("Benis", String.valueOf(benis), true)
+				.setFooter("Gesendet von: " + infos[6] + " | " + infos[5])
+				.setImage(imgUrl);
+		if(!infos[4].contains("nsfl"))
 			ch.sendMessage(eb.build()).queue();
 	}
-	public static void createVideo(TextChannel ch, String title, String Author, String footer, String imgUrl, String postUrl, String date, String cat, String poster, int benis) throws IOException {
-		EmbedBuilder eb = new EmbedBuilder();
-		InputStream file = new URL(imgUrl).openStream();
-		eb.setTitle(title, postUrl);
-		String autorLink = "https://pr0gramm.com/user/" + Author;
-		eb.addField("Uploader", "["+Author+"]"+"("+autorLink+")", true)
-				.addField("Datum", date, true)
-				.addField("Benis", String.valueOf(benis), true);
-		eb.setFooter("Gesendet von: " + poster + " | " + footer);
-		if(!cat.contains("nsfl"))
-			ch.sendFile(file, "video.mp4").embed(eb.build()).queue();
+
+	public static void createVideo(TextChannel ch, String[] infos, int benis, String imgUrl)  {
+		eb.clear();
+		eb.setTitle(infos[2],infos[1])
+				.addField("Uploader", "["+infos[0]+"]"+"("+"https://pr0gramm.com/user/" + infos[0]+")", true)
+				.addField("Datum", infos[3], true)
+				.addField("Benis", String.valueOf(benis), true)
+				.setFooter("Gesendet von: " + infos[6] + " | " + infos[5]);
+		if(!infos[4].contains("nsfl"))   {
+			ch.sendMessage(imgUrl).queue();
+			ch.sendMessage(eb.build()).queue();
+		}
 	}
-	public static void createComment(TextChannel ch, String author, String commUrl, String comment, String benis, String date, String postUrl, String poster, int result)  {
-		EmbedBuilder eb = new EmbedBuilder();
-		eb.setTitle("Kommentar von " + author, commUrl);
-		eb.setDescription(comment);
-		eb.addField("Benis", benis, true);
-		String autorLink = "https://pr0gramm.com/user/" + author;
-		eb.addField("Autor", "["+author+"]"+"("+autorLink+")", true);
-		eb.addField("Datum", date, true);
-		eb.addField("", "[Link zum Post]("+postUrl+")", true);
-		eb.addBlankField(true);
-		eb.addField("", "[Link zum Kommentar]("+commUrl+")",true);
-		eb.setFooter("Gesendet von:" + poster + " | " + benis);
+
+	public static void createComment(TextChannel ch, String[] infos)  {
+		eb.clear();
+		eb.setTitle("Kommentar von " + infos[1], infos[3]).setDescription(infos[4])
+				.addField("Autor", "["+infos[1]+"]"+"("+"https://pr0gramm.com/user/" + infos[1]+")", true)
+				.addField("Datum", infos[0], true)
+				.addField("Benis", infos[7], true)
+				.addField("", "[Link zum Post]("+infos[2]+")", true)
+				.addBlankField(true)
+				.addField("", "[Link zum Kommentar]("+infos[3]+")",true)
+				.setFooter("Gesendet von:" + infos[5] + " | " + infos[6]);
 		ch.sendMessage(eb.build()).queue();
 	}
 }
