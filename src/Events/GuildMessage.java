@@ -43,7 +43,7 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		} else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
-			if(values[1] != null && Captcha.capMsg != null && !Login.loggedIn) {
+			if (values[1] != null && Captcha.capMsg != null && !Login.loggedIn) {
 				Captcha.capMsg.delete().queue();
 				try {
 					pr0.Login.pr0Login(values[1]);
@@ -52,6 +52,17 @@ public class GuildMessage extends ListenerAdapter {
 				}
 			}
 			msg.delete().queue();
+		} else if(event.getMessage().getContentRaw().startsWith("!me")) {
+			try {
+				if(event.getMessage().getContentRaw().endsWith("!me"))  {
+					pr0.GetNewest.inspectUser(event.getChannel(), event.getMember().getNickname(), event.getMember().getNickname());
+				}   else    {
+					String arg = event.getMessage().getContentRaw().split(" ")[1];
+					pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getMember().getNickname());
+				}
+			}   catch (IOException e)   {
+				e.printStackTrace();
+			}
 		}  else if(!event.getGuild().getId().equals("690654418869420162") &&
 				(content.startsWith("!")
 				|| content.startsWith(">")

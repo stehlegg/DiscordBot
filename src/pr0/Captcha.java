@@ -16,7 +16,7 @@ public class Captcha {
 	public static Message capMsg;
 	public static void getCaptcha(TextChannel ch) throws IOException {
 		String url = "https://pr0gramm.com/api/user/captcha";
-		JSONObject json = Inspect.readJson(url);
+		JSONObject json = Core.JSON.readJson(url);
 		String encoded = json.get("captcha").toString();
 		String base64 = encoded.split(",")[1];
 		base64.replace("\\","");
