@@ -74,7 +74,9 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (IOException e)   {
 				e.printStackTrace();
 			}
-		}  else if(!event.getGuild().getId().equals("690654418869420162") &&
+		}  else if(msg.getContentRaw().startsWith("!log"))  {
+			Log.LogFIle.getLogFile(ch);
+		} else if(!event.getGuild().getId().equals("690654418869420162") &&
 				(content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")
