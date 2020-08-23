@@ -56,10 +56,8 @@ public class GuildMessage extends ListenerAdapter {
 			try {
 				if(event.getMessage().getContentRaw().endsWith("!me"))  {
 					if(event.getMember().getNickname() == null)    {
-						System.out.println("null=???");
 						pr0.GetNewest.inspectUser(event.getChannel(), event.getAuthor().getName(), event.getAuthor().getName());
 					}   else    {
-						System.out.println("nich null=???");
 						pr0.GetNewest.inspectUser(event.getChannel(), event.getMember().getNickname(), event.getMember().getNickname());
 					}
 				}   else    {
