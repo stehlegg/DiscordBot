@@ -76,6 +76,7 @@ public class Login {
 			}
 		}   else    {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
+			Log.pr0gramm.getLogger().error("Login requested with WRONG CAPTCHA");
 		}
 		Captcha.capMsg = null;
 	}

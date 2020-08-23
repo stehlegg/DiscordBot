@@ -33,5 +33,6 @@ public class Captcha {
 
 		token = json.getString("token");
 		ch.sendFile(output).append(token).queue();
+		Log.pr0gramm.getLogger().info("requested captcha with token: " + token);
 	}
 }

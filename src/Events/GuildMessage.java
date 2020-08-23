@@ -43,13 +43,22 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		} else if(event.getMessage().getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
-			if (values[1] != null && Captcha.capMsg != null && !Login.loggedIn) {
-				Captcha.capMsg.delete().queue();
-				try {
-					pr0.Login.pr0Login(values[1]);
-				} catch (IOException e) {
-					e.printStackTrace();
+			try {
+				if (values[1] != null && Captcha.capMsg != null && !Login.loggedIn && values[1].length() == 5) {
+					Captcha.capMsg.delete().queue();
+					try {
+						Log.pr0gramm.getLogger().info("Request pr0 login with valid arguments");
+						pr0.Login.pr0Login(values[1]);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}   else if(Captcha.capMsg == null) {
+					Log.pr0gramm.getLogger().error("Request pr0 login WITHOUT CAPTCHA");
+				}   else if(values[1].length() != 5)   {
+					Log.pr0gramm.getLogger().error("Request pr0 login with INVALID ARGUMENTS");
 				}
+			} catch (IndexOutOfBoundsException e)   {
+				Log.pr0gramm.getLogger().error("Requested login without arguments");
 			}
 			msg.delete().queue();
 		} else if(event.getMessage().getContentRaw().startsWith("!me")) {
