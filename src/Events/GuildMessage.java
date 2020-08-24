@@ -12,6 +12,7 @@ import pr0.Login;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class GuildMessage extends ListenerAdapter {
 	@Override
@@ -80,17 +81,17 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (ErrorResponseException e)    {
 				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
 			}
-		} else if(event.getMessage().getContentRaw().startsWith("!me")) {
+		} else if(event.getMessage().getContentRaw().startsWith("!me") && Login.loggedIn) {
 			try {
 				if(event.getMessage().getContentRaw().endsWith("!me"))  {
-					if(event.getMember().getNickname() == null)    {
+					if(Objects.requireNonNull(event.getMember()).getNickname() == null)    {
 						pr0.GetNewest.inspectUser(event.getChannel(), event.getAuthor().getName(), event.getAuthor().getName());
 					}   else    {
 						pr0.GetNewest.inspectUser(event.getChannel(), event.getMember().getNickname(), event.getMember().getNickname());
 					}
 				}   else    {
 					String arg = event.getMessage().getContentRaw().split(" ")[1];
-					if(event.getMember().getNickname() == null)    {
+					if(Objects.requireNonNull(event.getMember()).getNickname() == null)    {
 						pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getAuthor().getName());
 					}   else    {
 						pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getMember().getNickname());
@@ -128,7 +129,7 @@ public class GuildMessage extends ListenerAdapter {
 					delete(msg);
 			}
 		}
-		if(!event.getAuthor().isBot() && msg.getContentRaw().contains("https://pr0gramm.com/"))  {
+		if(!event.getAuthor().isBot() && msg.getContentRaw().contains("https://pr0gramm.com/") && Login.loggedIn)  {
 			try {
 				Inspect.inspectMsg(event.getMessage());
 				delete(event.getMessage());
