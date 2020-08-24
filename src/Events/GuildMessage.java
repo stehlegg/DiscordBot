@@ -112,7 +112,7 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (ErrorResponseException e)    {
 				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
 			}
-		} else if(!event.getGuild().getId().equals("690654418869420162") &&
+		} else if(!event.getGuild().getId().equals("690654418869420162") && !event.getGuild().getId().equals("664914629784240148") &&
 				(content.startsWith("!")
 				|| content.startsWith(">")
 				|| content.startsWith("*")

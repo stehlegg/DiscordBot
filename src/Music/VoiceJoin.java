@@ -29,21 +29,23 @@ public class VoiceJoin extends ListenerAdapter {
 		Guild guild = event.getGuild();
 		VoiceJoin.guild = guild;
 
-		logger.info(event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()
-		+ " has joined " + event.getChannelJoined().getName() + " in " + event.getGuild().getName());
-		try {
-			Config.loadConfig();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			if(Config.isPresent(id) && !guild.getAudioManager().isConnected())    {
-				String TrackUrl = Config.getValue(id);
-				skipTrack(guild);
-				loadAndPlay(guild, TrackUrl, event.getChannelJoined());
+		if(!event.getGuild().getId().equals("664914629784240148"))    {
+			logger.info(event.getMember().getUser().getName() + "#" + event.getMember().getUser().getDiscriminator()
+					+ " has joined " + event.getChannelJoined().getName() + " in " + event.getGuild().getName());
+			try {
+				Config.loadConfig();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				if(Config.isPresent(id) && !guild.getAudioManager().isConnected())    {
+					String TrackUrl = Config.getValue(id);
+					skipTrack(guild);
+					loadAndPlay(guild, TrackUrl, event.getChannelJoined());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
