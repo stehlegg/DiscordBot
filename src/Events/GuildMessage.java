@@ -66,12 +66,12 @@ public class GuildMessage extends ListenerAdapter {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}   else if(Captcha.capMsg == null) {
-					Log.pr0gramm.getLogger().error("Request pr0 login WITHOUT CAPTCHA");
-				}   else if(values[1] != null &&values[1].length() != 5)   {
-					Log.pr0gramm.getLogger().error("Request pr0 login with INVALID ARGUMENTS");
 				}   else if(Login.loggedIn) {
 					Log.pr0gramm.getLogger().error("Request pr0 login while ALREADY LOGGED IN");
+				}   else if(Captcha.capMsg == null) {
+					Log.pr0gramm.getLogger().error("Request pr0 login WITHOUT CAPTCHA");
+				}   else {
+					Log.pr0gramm.getLogger().error("Request pr0 login with INVALID ARGUMENTS");
 				}
 			} catch (IndexOutOfBoundsException e)   {
 				Log.pr0gramm.getLogger().error("Requested login without arguments");
@@ -129,12 +129,17 @@ public class GuildMessage extends ListenerAdapter {
 					delete(msg);
 			}
 		}
-		if(!event.getAuthor().isBot() && msg.getContentRaw().contains("https://pr0gramm.com/") && Login.loggedIn)  {
-			try {
-				Inspect.inspectMsg(event.getMessage());
-				delete(event.getMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
+		if(!event.getAuthor().isBot() && msg.getContentRaw().contains("https://pr0gramm.com/"))  {
+			if(!Login.loggedIn) {
+				ch.sendMessage("Bot nicht bei pr0 angemeldet| Type Captcha and !login with solved captcha to log in").queue();
+				Log.pr0gramm.getLogger().error("Requested data while not logged in");
+			}   else    {
+				try {
+					Inspect.inspectMsg(event.getMessage());
+					delete(event.getMessage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
