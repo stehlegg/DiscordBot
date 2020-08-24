@@ -24,8 +24,6 @@ public class Login {
 		Presence pres = API.getPres();
 		Config.loadConfig();
 
-		logger.info("Login requested");
-
 		String name = Config.getValue("pr0-name");
 		String pwd = Config.getValue("pr0-pwd");
 
@@ -74,9 +72,13 @@ public class Login {
 			if(file.delete())   {
 				logger.info("captcha file deleted");
 			}
-		}   else    {
+		}   else if(output.contains("\"error\":\"invalidCaptcha\""))   {
 			pres.setPresence(OnlineStatus.DO_NOT_DISTURB,Activity.playing("Login failed - !login"));
 			Log.pr0gramm.getLogger().error("Login requested with WRONG CAPTCHA");
+		}   else if(output.contains("\"ban\": true"))   {
+			Log.pr0gramm.getLogger().error("Login requested with BANNED ACCOUNT");
+		}   else if(output.contains("\"error\":\"invalidLogin\""))  {
+			Log.pr0gramm.getLogger().error("Login requested with WRONG ACC DETAILS (Name/Password)");
 		}
 		Captcha.capMsg = null;
 	}

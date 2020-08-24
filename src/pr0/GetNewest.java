@@ -42,7 +42,7 @@ public class GetNewest {
 				Log.pr0gramm.getLogger().info("Created IMAGE Embed of " + j2.get("id") + " in " + ch.getName() + " (" + ch.getGuild().getName() + ")");
 			}
 		}   catch(JSONException e)  {
-			Log.pr0gramm.getLogger().info(name + " nicht existent auf dem Pr0");
+			Log.pr0gramm.getLogger().error(name + " nicht existent auf dem Pr0");
 		}
 	}
 }

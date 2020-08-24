@@ -4,6 +4,7 @@ import Core.Config;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import pr0.Captcha;
 import pr0.Inspect;
@@ -32,12 +33,20 @@ public class GuildMessage extends ListenerAdapter {
 		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
 			try {
 				if(Captcha.capMsg != null)  {
-					Captcha.capMsg.delete().queue();
+					try {
+						msg.delete().complete();
+					}   catch (ErrorResponseException e)    {
+						Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+					}
 				}
 				if(!Login.loggedIn)  {
 					Captcha.getCaptcha(ch);
 				}
-				msg.delete().queue();
+				try {
+					msg.delete().complete();
+				}   catch (ErrorResponseException e)    {
+					Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -45,7 +54,11 @@ public class GuildMessage extends ListenerAdapter {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
 				if (values[1] != null && Captcha.capMsg != null && !Login.loggedIn && values[1].length() == 5) {
-					Captcha.capMsg.delete().queue();
+					try {
+						Captcha.capMsg.delete().complete();
+					}   catch (ErrorResponseException e)    {
+						Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+					}
 					try {
 						Log.pr0gramm.getLogger().info("Request pr0 login with valid arguments");
 						pr0.Login.pr0Login(values[1]);
@@ -54,13 +67,19 @@ public class GuildMessage extends ListenerAdapter {
 					}
 				}   else if(Captcha.capMsg == null) {
 					Log.pr0gramm.getLogger().error("Request pr0 login WITHOUT CAPTCHA");
-				}   else if(values[1].length() != 5)   {
+				}   else if(values[1] != null &&values[1].length() != 5)   {
 					Log.pr0gramm.getLogger().error("Request pr0 login with INVALID ARGUMENTS");
+				}   else if(Login.loggedIn) {
+					Log.pr0gramm.getLogger().error("Request pr0 login while ALREADY LOGGED IN");
 				}
 			} catch (IndexOutOfBoundsException e)   {
 				Log.pr0gramm.getLogger().error("Requested login without arguments");
 			}
-			msg.delete().queue();
+			try {
+				msg.delete().complete();
+			}   catch (ErrorResponseException e)    {
+				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+			}
 		} else if(event.getMessage().getContentRaw().startsWith("!me")) {
 			try {
 				if(event.getMessage().getContentRaw().endsWith("!me"))  {
@@ -77,13 +96,21 @@ public class GuildMessage extends ListenerAdapter {
 						pr0.GetNewest.inspectUser(event.getChannel(), arg, event.getMember().getNickname());
 					}
 				}
-				msg.delete().queue();
+				try {
+					msg.delete().complete();
+				}   catch (ErrorResponseException e)    {
+					Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+				}
 			}   catch (IOException e)   {
 				e.printStackTrace();
 			}
 		}  else if(msg.getContentRaw().startsWith("!log"))  {
 			Log.LogFIle.getLogFile(ch);
-			msg.delete().queue();
+			try {
+				msg.delete().complete();
+			}   catch (ErrorResponseException e)    {
+				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+			}
 		} else if(!event.getGuild().getId().equals("690654418869420162") &&
 				(content.startsWith("!")
 				|| content.startsWith(">")
@@ -131,7 +158,11 @@ public class GuildMessage extends ListenerAdapter {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			msg.delete().queue();
+			try {
+				msg.delete().complete();
+			}   catch (ErrorResponseException e)    {
+				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
+			}
 		}).start();
 	}
 }
