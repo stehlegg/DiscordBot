@@ -31,7 +31,7 @@ public class GuildMessage extends ListenerAdapter {
 			Captcha.capMsg = msg;
 		}
 
-		if(event.getMessage().getContentRaw().equalsIgnoreCase("captcha"))   {
+		if(msg.getContentRaw().equalsIgnoreCase("captcha"))   {
 			try {
 				if(Captcha.capMsg != null)  {
 					try {
@@ -51,7 +51,7 @@ public class GuildMessage extends ListenerAdapter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if(event.getMessage().getContentRaw().startsWith("!login")) {
+		} else if(msg.getContentRaw().startsWith("!login")) {
 			String[] values = event.getMessage().getContentRaw().split(" ");
 			try {
 				if (values[1] != null && Captcha.capMsg != null && !Login.loggedIn && values[1].length() == 5) {
@@ -81,9 +81,9 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (ErrorResponseException e)    {
 				Log.Discord.getLogger().error("Couldn't find message to delete (deleted by other source)");
 			}
-		} else if(event.getMessage().getContentRaw().startsWith("!me") && Login.loggedIn) {
+		} else if(msg.getContentRaw().startsWith("!me") && Login.loggedIn) {
 			try {
-				if(event.getMessage().getContentRaw().endsWith("!me"))  {
+				if(msg.getContentRaw().endsWith("!me"))  {
 					if(Objects.requireNonNull(event.getMember()).getNickname() == null)    {
 						pr0.GetNewest.inspectUser(event.getChannel(), event.getAuthor().getName(), event.getAuthor().getName());
 					}   else    {
@@ -105,7 +105,9 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (IOException e)   {
 				e.printStackTrace();
 			}
-		}  else if(msg.getContentRaw().startsWith("!log"))  {
+		}  else if(msg.getContentRaw().startsWith("!tag") && !msg.getContentRaw().endsWith("!tag") && Login.loggedIn)	{
+
+		} else if(msg.getContentRaw().startsWith("!log"))  {
 			Log.LogFIle.getLogFile(ch);
 			try {
 				msg.delete().complete();

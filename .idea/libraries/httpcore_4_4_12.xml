@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="httpcore-4.4.12">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/dev/httpcore-4.4.12.jar!/" />
+      <root url="jar://$USER_HOME$/DEV/DEPENDENCIES/httpcore-4.4.12.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
