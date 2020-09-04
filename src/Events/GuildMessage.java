@@ -105,7 +105,8 @@ public class GuildMessage extends ListenerAdapter {
 			}   catch (IOException e)   {
 				e.printStackTrace();
 			}
-		}  else if(msg.getContentRaw().startsWith("!tag") && !msg.getContentRaw().endsWith("!tag") && Login.loggedIn)	{
+		}  else if(msg.getContentRaw().startsWith("!tag") && !msg.getContentRaw().endsWith("!tag") && Login.loggedIn && !msg.getContentRaw().split(" ")[1].isEmpty())	{
+
 
 		} else if(msg.getContentRaw().startsWith("!log"))  {
 			Log.LogFIle.getLogFile(ch);
@@ -116,7 +117,6 @@ public class GuildMessage extends ListenerAdapter {
 			}
 		} else if(!event.getGuild().getId().equals("690654418869420162") && !event.getGuild().getId().equals("664914629784240148") &&
 				(content.startsWith("!")
-				|| content.startsWith(">")
 				|| content.startsWith("*")
 				|| msg.getAuthor().getName().contains("Rythm"))) {
 			if(content.startsWith("!delete"))    {       //Kommando zum Löschen mehrerer Nachricht
@@ -149,7 +149,12 @@ public class GuildMessage extends ListenerAdapter {
 	public void clear(TextChannel ch, int n)   {
 		new Thread(() -> {
 			List<Message> msgs = ch.getHistory().retrievePast(n + 1).complete();
-			ch.deleteMessages(msgs).complete();
+			try {
+				ch.deleteMessages(msgs).complete();
+			} catch(IllegalArgumentException e)	{
+				Log.Discord.getLogger().error("Requested deletion of message older than 2 weeks");
+				ch.sendMessage("message older than 2 weeks").queue();
+			}
 		}).start();
 	}
 

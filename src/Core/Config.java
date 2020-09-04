@@ -28,12 +28,15 @@ public class Config {
 	////////////////////////////////////////////////////////////////////////////
 	public static String getValue(String key) throws IOException {
 		loadConfig();
+		/*
 		int len = cfg.getProperty(key).split(",").length;
 		String[] arr = cfg.getProperty(key).split(",");
 		Random rand = new Random();
 		int random = rand.nextInt((len));
-		logger.info("Retrieved Value for Key: " + key);
 		return arr[random];
+		*/
+		logger.info("Retrieved Value for Key: " + key);
+		return cfg.getProperty(key);
 	}
 
 	////////////////////////////////////////////////////////////////////////////

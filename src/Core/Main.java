@@ -1,7 +1,6 @@
 package Core;
 
 import Events.GuildMessage;
-import Music.VoiceJoin;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -41,8 +40,7 @@ public class Main   {
 		JDA jda = JDABuilder
 				.createDefault(Config.getValue("token"))
 				.addEventListeners(
-						new GuildMessage(),
-						new VoiceJoin())
+						new GuildMessage())
 				.build().awaitReady();
 
 		Logger logger = Log.Discord.getLogger();

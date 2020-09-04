@@ -2,15 +2,10 @@
   <artifact name="YAYEET:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/YAYEET_jar</output-path>
     <root id="root">
-      <element id="archive" name="bot.jar">
-        <element id="module-output" name="YAYEET" />
+      <element id="archive" name="YAYEET.jar">
+        <element id="module-output" name="DiscordBot" />
       </element>
-      <element id="directory" name="dependencies">
-        <element id="library" level="project" name="json-20200518" />
-        <element id="library" level="project" name="logback-core-1.2.3" />
-        <element id="library" level="project" name="logback-classic-1.2.3" />
-        <element id="library" level="project" name="JDA-4.2.0_191-withDependencies" />
-      </element>
+      <element id="directory" name="dependencies" />
     </root>
   </artifact>
 </component>
